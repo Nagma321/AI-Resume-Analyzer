@@ -1,0 +1,131 @@
+/* 🌟 Global Layout */
+body {
+  background: #f5f7fb;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+/* Center Box Container */
+.container-center {
+  max-width: 540px;
+  margin: 80px auto;
+  background: white;
+  padding: 34px;
+  border-radius: 14px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+  text-align: center;
+}
+
+/* Title */
+.app-header h1 {
+  font-size: 28px;
+  margin-bottom: 24px;
+  font-weight: 700;
+  color: #2a2a2a;
+}
+
+/* Upload Box */
+.upload-box {
+  border: 2px dashed #b2b8c5;
+  padding: 26px;
+  border-radius: 10px;
+  background: #fafbff;
+  transition: 0.2s;
+}
+.upload-box:hover {
+  border-color: #4a6cf7;
+}
+
+/* Upload Button */
+.btn-upload {
+  background: #4a6cf7;
+  color: white;
+  font-size: 15px;
+  padding: 12px 22px;
+  border-radius: 6px;
+  border: none;
+  margin-top: 18px;
+}
+.btn-upload:hover {
+  background: #3b57c5;
+}
+
+/* Analyze Button */
+.btn-primary {
+  background: #14b8a6 !important;
+  border: none;
+  font-weight: 600;
+}
+.btn-primary:hover {
+  background: #0e9082 !important;
+}
+.compare-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.compare-card {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border: 1px solid #e8e8e8;
+}
+
+.progress-bar-container {
+  background: #eee;
+  border-radius: 30px;
+  height: 14px;
+  width: 100%;
+  overflow: hidden;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #4CAF50, #2E7D32);
+  border-radius: 30px;
+}
+.file-label {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.upload-card {
+  background: #ffffff;
+  padding: 28px;
+  border-radius: 12px;
+  width: 800px;
+  max-width: 95%;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  border: 1px solid #e6e6e6;
+  margin-top: 15px;
+}
+
+.form-row {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+}
+
+.form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.form-group textarea {
+  height: 140px;
+  padding: 10px;
+  resize: vertical;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}

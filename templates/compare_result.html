@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Resume Comparison Report</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+body { background:#f4f7fb; }
+.container-box {
+    width:90%; margin:auto; padding:30px;
+    background:white; border-radius:12px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.08);
+}
+.winner-box {
+    background:#d1fae5; border-left:5px solid #059669;
+    padding:14px; border-radius:8px; margin-bottom:20px;
+}
+.score-bar {
+    height:22px; border-radius:8px; background:#e5e7eb;
+    overflow:hidden; margin-bottom:8px;
+}
+.score-fill {
+    height:100%; background:#0d6efd;
+    text-align:center; color:white; font-weight:600;
+    font-size:13px; padding-top:2px;
+}
+.skill-badge { padding:6px 10px; border-radius:6px; margin:2px; font-size:13px; display:inline-block;}
+.shared { background:#c8e6c9; }
+.uniqueA { background:#ffcdd2; }
+.uniqueB { background:#bbdefb; }
+</style>
+</head>
+
+<body>
+
+<div class="container-box mt-4">
+
+    <h2 class="text-center mb-4">📊 Resume Comparison Report</h2>
+
+    <!-- 🏆 Winner Section -->
+    {% set scoreA = result_a['ats_score'] %}
+    {% set scoreB = result_b['ats_score'] %}
+
+    {% if scoreA > scoreB %}
+        <div class="winner-box">
+            🏆 <strong>Winner: Resume A</strong><br>
+            Resume A scored <b>{{ scoreA }}</b> which is higher than Resume B (<b>{{ scoreB }}</b>).
+        </div>
+    {% elif scoreB > scoreA %}
+        <div class="winner-box">
+            🏆 <strong>Winner: Resume B</strong><br>
+            Resume B scored <b>{{ scoreB }}</b> which is higher than Resume A (<b>{{ scoreA }}</b>).
+        </div>
+    {% else %}
+        <div class="winner-box" style="background:#e0f2fe; border-left-color:#0284c7;">
+            🤝 <strong>Both resumes are equally strong!</strong><br>
+            Both scored <b>{{ scoreA }}</b>. You can improve further based on missing skills.
+        </div>
+    {% endif %}
+
+    <!-- Score Bars -->
+    <h5>ATS Score Comparison</h5>
+
+    <p class="mb-1">Resume A — {{ scoreA }} / 100</p>
+    <div class="score-bar">
+        <div class="score-fill" style="width:{{ scoreA }}%">{{ scoreA }}%</div>
+    </div>
+
+    <p class="mb-1">Resume B — {{ scoreB }} / 100</p>
+    <div class="score-bar">
+        <div class="score-fill" style="width:{{ scoreB }}%; background:#16a34a;">
+            {{ scoreB }}%
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Skill Comparison -->
+    <h4 class="text-center mb-3">🧩 Skills Comparison</h4>
+
+    {% set skillsA = result_a['skills'].split(',') if result_a['skills'] else [] %}
+    {% set skillsB = result_b['skills'].split(',') if result_b['skills'] else [] %}
+    {% set shared = skillsA|select('in', skillsB)|list %}
+    {% set uniqueA = skillsA|reject('in', skillsB)|list %}
+    {% set uniqueB = skillsB|reject('in', skillsA)|list %}
+
+    <div class="row">
+        <div class="col-md-4">
+            <h6>🟢 Shared Skills ({{ shared|length }})</h6>
+            {% for s in shared %}<span class="skill-badge shared">{{ s }}</span>{% endfor %}
+        </div>
+        <div class="col-md-4">
+            <h6>🔴 Unique to Resume A ({{ uniqueA|length }})</h6>
+            {% for s in uniqueA %}<span class="skill-badge uniqueA">{{ s }}</span>{% endfor %}
+        </div>
+        <div class="col-md-4">
+            <h6>🔵 Unique to Resume B ({{ uniqueB|length }})</h6>
+            {% for s in uniqueB %}<span class="skill-badge uniqueB">{{ s }}</span>{% endfor %}
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="text-center">
+        <a href="/compare" class="btn btn-outline-primary">🔁 Compare Again</a>
+        <a href="/" class="btn btn-success">🏠 Back Home</a>
+    </div>
+</div>
+
+</body>
+</html>

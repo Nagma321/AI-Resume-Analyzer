@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Resume Analysis Report</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body { background:#f3f7ff; padding:25px; }
+    .score-ring {
+      width:160px; height:160px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-size:26px; font-weight:700; color:#0d6efd;
+      border:10px solid #cfe2ff;
+      background:white;
+      margin:auto;
+    }
+    .card-box {
+      background:white; border-radius:15px; padding:18px;
+      box-shadow:0 4px 10px rgba(0,0,0,0.07);
+    }
+    .badge-skill {
+      background:#eef2ff; color:#0d6efd; padding:8px 12px;
+      border-radius:8px; font-size:13px; margin:3px;
+    }
+    .bar {
+      height:10px; border-radius:6px; margin-bottom:8px;
+    }
+    pre { white-space:pre-wrap; font-size:14px; line-height:1.4; }
+  </style>
+</head>
+
+<body>
+
+<h2 class="text-center mb-4">📄 AI Resume Analysis Report</h2>
+
+<div class="container-fluid">
+  <div class="row g-4">
+
+    <!-- ================= LEFT PANEL: Resume Text ================ -->
+    <div class="col-md-7">
+      <div class="card-box" style="min-height:650px;">
+        <h5>📌 Extracted Resume Text</h5>
+        <hr>
+        <div style="max-height:600px; overflow:auto;">
+          <pre>{{ result['text'] }}</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= RIGHT PANEL: ATS Dashboard ================ -->
+    <div class="col-md-5">
+
+      <!-- Score Ring -->
+      <div class="card-box text-center mb-3">
+        <h5>🤖 ATS Score</h5>
+        <div class="score-ring">{{ result['ats_score'] }}%</div>
+        {% set rating = "Excellent" %}
+        {% if result['ats_score'] < 80 and result['ats_score'] >= 60 %}
+          {% set rating = "Good" %}
+        {% elif result['ats_score'] < 60 and result['ats_score'] >= 40 %}
+          {% set rating = "Average" %}
+        {% elif result['ats_score'] < 40 %}
+          {% set rating = "Needs Improvement" %}
+        {% endif %}
+        <p class="mt-2"><strong>Status:</strong> {{ rating }}</p>
+      </div>
+
+      <!-- Skills -->
+      <div class="card-box mb-3">
+        <h6>🧠 Skills Detected</h6>
+        {% if result['skills'] %}
+          {% for s in result['skills'].split(',') %}
+            <span class="badge-skill">{{ s.strip() }}</span>
+          {% endfor %}
+        {% else %}
+          <p class="text-muted">No skills found</p>
+        {% endif %}
+      </div>
+
+      <!-- Top Job Roles -->
+      <div class="card-box mb-3">
+        <h6>💼 Best Matching Roles</h6>
+        {% for role, score in result['top_roles'] %}
+          <p>✔ {{ role }} — <strong>{{ score }}%</strong></p>
+        {% endfor %}
+      </div>
+
+      <!-- Score Breakdown -->
+      <div class="card-box mb-3">
+        <h6>📊 Score Breakdown</h6>
+        <label>Skills ({{ result['score_breakdown']['skills'] }} / 60)</label>
+        <div class="bar bg-primary" style="width:{{ result['score_breakdown']['skills'] }}%;"></div>
+
+        <label>Sections ({{ result['score_breakdown']['sections'] }} / 25)</label>
+        <div class="bar bg-success" style="width:{{ result['score_breakdown']['sections'] }}%;"></div>
+
+        <label>Keywords ({{ result['score_breakdown']['keywords'] }} / 15)</label>
+        <div class="bar bg-warning" style="width:{{ result['score_breakdown']['keywords'] }}%;"></div>
+      </div>
+
+      <!-- Suggestions -->
+      <div class="card-box">
+        <h6>💡 Suggestions to Improve</h6>
+        {% if result['missing_skills'] %}
+          <p>Add missing relevant skills:</p>
+          <p style="color:#d60000;"><strong>{{ result['missing_skills'] }}</strong></p>
+        {% else %}
+          <p>🎉 Your resume is well optimized!</p>
+        {% endif %}
+
+        <a href="/download_report" class="btn btn-success w-100 mt-2">⬇ Download PDF Report</a>
+        <a href="/" class="btn btn-outline-secondary w-100 mt-2">🔁 Analyze Another</a>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

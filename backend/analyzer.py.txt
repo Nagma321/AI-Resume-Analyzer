@@ -1,0 +1,43 @@
+import spacy
+nlp = spacy.load("en_core_web_sm")
+
+required_skills = [
+    "python", "machine learning", "ml", "data analysis", "sql",
+    "deep learning", "nlp", "tensorflow", "pytorch", "streamlit", "aws"
+]
+
+def normalize(text):
+    return text.lower()
+
+def extract_emails(text):
+    import re
+    return re.findall(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}", text)
+
+def extract_phone(text):
+    import re
+    phones = re.findall(r"\+?\d[\d\-\s]{6,}\d", text)
+    return phones
+
+def analyze_resume(text):
+    txt = normalize(text)
+    doc = nlp(txt)
+
+    # Find matching skills
+    found = set()
+    for skill in required_skills:
+        if skill in txt:
+            found.add(skill)
+
+    # Simple score
+    score = (len(found) / len(required_skills)) * 100 if required_skills else 0.0
+
+    # Extract contact details
+    emails = extract_emails(text)
+    phones = extract_phone(text)
+
+    return {
+        "skills_found": sorted(found),
+        "score": round(score, 2),
+        "emails": emails,
+        "phones": phones
+    }

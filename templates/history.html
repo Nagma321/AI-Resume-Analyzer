@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Resume History</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+<div class="container-center">
+  <header class="app-header">
+    <h1>Analyzed Resumes</h1>
+  </header>
+
+  <div class="card">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+  <th>File</th>
+  <th>Skills</th>
+  <th>ATS Score</th>
+  <th>Date</th>
+  <th>Action</th>
+</tr>
+
+      </thead>
+      <tbody>
+        {% for row in data %}
+        <tr>
+  <td>{{ row.file_name }}</td>
+  <td>{{ row.skills }}</td>
+  <td>{{ row.score }}</td>
+  <td>{{ row.created_at }}</td>
+  <td>
+    <a href="/delete/{{ row.id }}" onclick="return confirm('Are you sure you want to delete this record?')" class="btn btn-sm btn-danger">
+      Delete
+    </a>
+  </td>
+</tr>
+
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <a href="/" class="btn btn-primary mt-3">Back to Upload</a>
+  </div>
+</div>
+</body>
+</html>
